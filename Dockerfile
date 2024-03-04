@@ -11,7 +11,7 @@ WORKDIR /app
 COPY . .
 
 # 编译 Go 应用程序
-RUN go build -o myapp .
+RUN go build -o myapp src/go_code/project_1/main/hello.go
 
 # 暴露 8080 端口
 EXPOSE 8080
