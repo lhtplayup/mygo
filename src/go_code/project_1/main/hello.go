@@ -37,9 +37,9 @@ func hello(res http.ResponseWriter, req *http.Request) {
 }
 func main() {
 	//路由到指定站点位置跳转相关函数处理
-	fmt.Println("服务端启动了。。。。。")
 	ipv4, _ := getLocalIP()
 	fmt.Printf("ipv4 is <%s>", ipv4)
+	fmt.Println("服务端启动了。。。。。")
 	http.HandleFunc("/", hello)
 	err := http.ListenAndServe(ipv4+":8080", nil)
 	if err != nil {
