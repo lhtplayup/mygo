@@ -2,37 +2,22 @@ package main
 
 import (
 	"fmt"
-	"net"
+	"net/http"
 )
 
-func process(conn net.Conn) {
-	defer conn.Close()
-	for {
-		buf := make([]byte, 1024)
-		n, err := conn.Read(buf)
-		if err != nil {
-			return
-		}
-		fmt.Println(string(buf[0:n]))
-	}
+// HTTP服务端配置
+// 业务请求相应处理
+func hello(res http.ResponseWriter, req *http.Request) {
+	fmt.Println("hello")
+	fmt.Fprintln(res, "<h1>welcome</h1>")
 }
-
 func main() {
-	//fmt.Println("hello word")
-	fmt.Println("服务端启动了....")
-	listen, err := net.Listen("tcp", "127.0.0.1:8080")
+	//路由到指定站点位置跳转相关函数处理
+	fmt.Println("服务端启动了。。。。。")
+	http.HandleFunc("/", hello)
+	err := http.ListenAndServe("127.0.0.1:8080", nil)
 	if err != nil {
-		fmt.Println("监听失败,err:", err)
+		fmt.Println("启动监听失败,err:", err)
 		return
-	}
-
-	for {
-		conn, err2 := listen.Accept()
-		if err2 != nil {
-			fmt.Println("客户端的等待失败，err2:", err2)
-		} else {
-			fmt.Println("等待连接成功，con=%v,接收客户端消息：%v", conn, conn.RemoteAddr().String())
-		}
-		go process(conn)
 	}
 }
